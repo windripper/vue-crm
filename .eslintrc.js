@@ -20,6 +20,7 @@ module.exports = {
         'linebreak-style': 'off',
         'operator-linebreak': 'off',
         'no-debugger': 'warn',
-        'keyword-spacing': 'off'
+        'keyword-spacing': 'off',
+        'max-len': ['error', 100]
     }
 };
