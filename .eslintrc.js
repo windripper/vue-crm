@@ -21,6 +21,7 @@ module.exports = {
         'operator-linebreak': 'off',
         'no-debugger': 'warn',
         'keyword-spacing': 'off',
-        'max-len': ['error', 100]
+        'max-len': ['error', 100],
+        'no-useless-catch': 'off'
     }
 };

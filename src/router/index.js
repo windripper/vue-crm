@@ -30,7 +30,7 @@ const routes = [
     },
     {
         path: '/record/:id',
-        name: 'record',
+        name: 'details',
         meta: { layout: 'main' },
         component: () => import('../views/RecordDetails')
     },

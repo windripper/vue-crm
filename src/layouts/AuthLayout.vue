@@ -5,8 +5,20 @@
 </template>
 
 <script>
+import messages from '@/utils/messages';
+
 export default {
-    name: 'AuthLayout'
+    name: 'AuthLayout',
+    computed: {
+        error() {
+            return this.$store.getters.getError;
+        }
+    },
+    watch: {
+        error(fbError) {
+            this.$error(messages[fbError.code] || 'Something went wrong');
+        }
+    }
 };
 </script>
 

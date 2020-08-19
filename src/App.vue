@@ -17,7 +17,6 @@ export default {
     },
     computed: {
         layout() {
-            console.log(this);
             return (this.$route.meta.layout || 'auth') + '-layout';
         }
     }

@@ -3,57 +3,51 @@
         <div class="page-title">
             <h3>Account</h3>
 
-            <button class="btn waves-effect waves-light btn-small">
+            <button class="btn waves-effect waves-light btn-small" @click="refresh">
                 <i class="material-icons">refresh</i>
             </button>
         </div>
 
-        <div class="row">
-            <div class="col s12 m6 l4">
-                <div class="card light-blue bill-card">
-                    <div class="card-content white-text">
-                        <span class="card-title">Value</span>
+        <Loader v-if="isLoading"/>
 
-                        <p class="currency-line">
-                            <span>55 $</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
+        <div v-else class="row">
 
-            <div class="col s12 m6 l8">
-                <div class="card orange darken-3 bill-card">
-                    <div class="card-content white-text">
-                        <div class="card-header">
-                            <span class="card-title">Exchange rate</span>
-                        </div>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Currency</th>
-                                <th>Rate</th>
-                                <th>Date</th>
-                            </tr>
-                            </thead>
+            <HomeBalance
+                :rates="currency.rates"
+            />
 
-                            <tbody>
-                            <tr>
-                                <td>руб</td>
-                                <td>12121</td>
-                                <td>12.12.12</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+            <HomeCurrency
+                :rates="currency.rates"
+                :date="currency.date"
+            />
         </div>
     </div>
 </template>
 
 <script>
+import HomeBalance from '@/components/HomeBalance';
+import HomeCurrency from '@/components/HomeCurrency';
 
 export default {
-    name: 'Home'
+    name: 'Home',
+    components: {
+        HomeBalance,
+        HomeCurrency
+    },
+    data: () => ({
+        isLoading: true,
+        currency: null
+    }),
+    methods: {
+        async refresh() {
+            this.isLoading = true;
+            this.currency = await this.$store.dispatch('info/fetchCurrency');
+            this.isLoading = false;
+        }
+    },
+    async mounted() {
+        this.currency = await this.$store.dispatch('info/fetchCurrency');
+        this.isLoading = false;
+    }
 };
 </script>
