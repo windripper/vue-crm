@@ -24,7 +24,7 @@ export default {
                 throw e;
             }
         },
-        getUser() {
+        getUid() {
             const user = auth.currentUser;
             return user ? user.uid : null;
         },
