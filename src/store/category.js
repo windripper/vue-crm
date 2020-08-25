@@ -15,6 +15,19 @@ export default {
                 throw e;
             }
         },
+        async fetchCategoryById({ dispatch, commit }, id) {
+            try {
+                const uid = await dispatch('auth/getUid', null, { root: true });
+                const category = (await db.ref(`/users/${uid}/categories`)
+                    .child(id)
+                    .once('value')).val() || {};
+
+                return { ...category, id };
+            } catch(e) {
+                commit('setError', e, { root: true });
+                throw e;
+            }
+        },
         async createCategory({ dispatch, commit }, { title, limit }) {
             try {
                 const uid = await dispatch('auth/getUid', null, { root: true });

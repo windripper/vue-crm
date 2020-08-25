@@ -29,7 +29,7 @@
                     <span
                         v-if="$v.title.$dirty && !$v.title.required"
                         class="helper-text invalid"
-                    >Please enter category name</span>
+                    >Please type a category name</span>
                 </div>
 
                 <div class="input-field">

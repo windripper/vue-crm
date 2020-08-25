@@ -34,6 +34,17 @@ export default {
             // eslint-disable-next-line max-len
             const res = await fetch(`http://data.fixer.io/api/latest?access_key=${key}&symbols=${currency}`);
             return await res.json();
+        },
+        async updateInfo({ dispatch, commit, getters }, toUpdate) {
+            try {
+                const uid = await dispatch('auth/getUid', null, { root: true });
+                const updateData = await { ...getters.getInfo, ...toUpdate };
+                await db.ref(`/users/${uid}/info`).update(updateData);
+                commit('setInfo', updateData);
+            } catch(e) {
+                commit('setError', e, { root: true });
+                throw e;
+            }
         }
     }
 };
