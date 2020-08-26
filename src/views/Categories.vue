@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="page-title">
-            <h3>Categories</h3>
+            <h3>{{ 'CategoriesTitle' | localize }}</h3>
         </div>
         <section>
             <Loader v-if="isLoading"/>
@@ -16,7 +16,7 @@
                     :key="categories.length + updateCount"
                 />
 
-                <p v-else class="center">You haven't created any categories yet</p>
+                <p v-else class="center">{{ 'CategoriesWarning' | localize }}</p>
 
             </div>
         </section>
@@ -38,6 +38,11 @@ export default {
         isLoading: true,
         updateCount: 0
     }),
+    metaInfo() {
+        return {
+            title: this.$title('CategoriesTitle')
+        };
+    },
     methods: {
         addNewCategory(category) {
             this.categories.push(category);

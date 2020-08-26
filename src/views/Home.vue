@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="page-title">
-            <h3>Account</h3>
+            <h3>{{ 'HomeTitle' | localize}}</h3>
 
             <button class="btn waves-effect waves-light btn-small" @click="refresh">
                 <i class="material-icons">refresh</i>
@@ -33,6 +33,11 @@ export default {
     components: {
         HomeBalance,
         HomeCurrency
+    },
+    metaInfo() {
+        return {
+            title: this.$title('HomeTitle')
+        };
     },
     data: () => ({
         isLoading: true,

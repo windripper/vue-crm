@@ -1,5 +1,9 @@
+import store from '../store';
+
 export default function currencyFilter(value, currency = 'USD') {
-    return new Intl.NumberFormat('en-US', {
+    const locale = store.getters['info/getInfo'].locale || 'en-US';
+
+    return new Intl.NumberFormat(locale, {
         style: 'currency',
         currency
     }).format(value);

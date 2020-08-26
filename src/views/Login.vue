@@ -1,7 +1,7 @@
 <template>
     <form class="card auth-card" @submit.prevent="submitHandler">
         <div class="card-content">
-            <span class="card-title">Home Bookkeeping</span>
+            <span class="card-title">{{ 'AuthTitle' | localize }}</span>
             <div class="input-field">
                 <input
                     id="email"
@@ -14,11 +14,11 @@
                 <small
                     class="helper-text invalid"
                     v-if="$v.email.$dirty && !$v.email.required"
-                >This field should not be empty</small>
+                >{{ 'AuthEmailEmpty' | localize }}</small>
                 <small
                     class="helper-text invalid"
                     v-else-if="$v.email.$dirty && !$v.email.email"
-                >Please type correct email</small>
+                >{{ 'AuthEmailValidator' | localize }}</small>
             </div>
             <div class="input-field">
                 <input
@@ -27,11 +27,11 @@
                     v-model.trim="password"
                     :class="{ invalid: ($v.password.$dirty && !$v.password.required)}"
                 >
-                <label for="password">Password</label>
+                <label for="password">{{ 'AuthPassword' | localize }}</label>
                 <small
                     class="helper-text invalid"
                     v-if="$v.password.$dirty && !$v.password.required"
-                >Please fill in password field</small>
+                >{{ 'AuthPasswordEmpty' | localize }}</small>
             </div>
         </div>
         <div class="card-action">
@@ -40,14 +40,14 @@
                     class="btn waves-effect waves-light auth-submit"
                     type="submit"
                 >
-                    Sign in
+                    {{ 'LoginSignIn' | localize }}
                     <i class="material-icons right">send</i>
                 </button>
             </div>
 
             <p class="center">
-                Don't have an account yet?
-                <router-link to="/register">Register</router-link>
+                {{ 'LoginCreateText' | localize }}
+                <router-link to="/register">{{ 'LoginRegister' | localize }}</router-link>
             </p>
         </div>
     </form>
@@ -55,10 +55,15 @@
 
 <script>
 import { email, required, minLength } from 'vuelidate/lib/validators';
-import messages from '@/utils/messages';
+import generateMessage from '@/utils/messages';
 
 export default {
     name: 'Login',
+    metaInfo() {
+        return {
+            title: this.$title('LoginTitle')
+        };
+    },
     data: () => ({
         email: '',
         password: '',
@@ -88,7 +93,7 @@ export default {
         }
     },
     mounted() {
-        const message = messages[this.$route.query.message];
+        const message = generateMessage(this.$route.query.message);
         if (message) {
             this.$message(message);
         }

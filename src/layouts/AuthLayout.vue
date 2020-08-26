@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import messages from '@/utils/messages';
+import generateMessage from '@/utils/messages';
 
 export default {
     name: 'AuthLayout',
@@ -16,7 +16,7 @@ export default {
     },
     watch: {
         error(fbError) {
-            this.$error(messages[fbError.code] || 'Something went wrong');
+            this.$error(generateMessage(fbError.code) || 'Something went wrong');
         }
     }
 };

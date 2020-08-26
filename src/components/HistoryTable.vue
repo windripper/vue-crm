@@ -3,11 +3,11 @@
         <thead>
         <tr>
             <th>#</th>
-            <th>Total</th>
-            <th>Date</th>
-            <th>Category</th>
-            <th>Type</th>
-            <th>Open</th>
+            <th>{{ 'HistoryTotal' | localize }}</th>
+            <th>{{ 'HistoryDate' | localize }}</th>
+            <th>{{ 'HistoryCategory' | localize }}</th>
+            <th>{{ 'HistoryType' | localize }}</th>
+            <th>{{ 'HistoryOpen' | localize }}</th>
         </tr>
         </thead>
 
@@ -21,13 +21,13 @@
                 <span
                     class="white-text badge red"
                     :class="record.typeClass"
-                >{{ record.typeText }}</span>
+                >{{ record.typeText | localize }}</span>
             </td>
             <td>
                 <button
                     class="btn-small btn"
                     @click="$router.push(`/record/${record.id}`)"
-                    v-tooltip="'Open the record'"
+                    v-tooltip="openText"
                 >
                     <i class="material-icons">open_in_new</i>
                 </button>
@@ -44,6 +44,12 @@ export default {
         records: {
             required: true,
             type: Array
+        }
+    },
+    computed: {
+        openText() {
+            const locale = this.$store.getters['info/getInfo'].locale || 'en-US';
+            return locale === 'en-US' ? 'Open the record' : 'Открыть запись';
         }
     }
 };

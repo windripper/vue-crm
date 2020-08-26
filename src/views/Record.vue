@@ -1,14 +1,14 @@
 <template>
     <div>
         <div class="page-title">
-            <h3>New record</h3>
+            <h3>{{ 'RecordTitle' | localize }}</h3>
         </div>
 
         <Loader v-if="isLoading"/>
 
         <p class="center" v-else-if="!categories.length">
-            You don't have any categories yet.
-            <router-link to="/categories">Add a new category</router-link>
+            {{ 'RecordWarning' | localize }}
+            <router-link to="/categories">{{ 'RecordAddCategory' | localize }}</router-link>
         </p>
 
         <form class="form" v-else @submit.prevent="submitHandler">
@@ -21,7 +21,7 @@
                     >{{ c.title }}
                     </option>
                 </select>
-                <label>Choose category</label>
+                <label>{{ 'RecordChooseCategory' | localize }}</label>
             </div>
 
             <p>
@@ -33,7 +33,7 @@
                         value="income"
                         v-model="type"
                     />
-                    <span>Income</span>
+                    <span>{{ 'RecordIncome' | localize }}</span>
                 </label>
             </p>
 
@@ -46,7 +46,7 @@
                         value="expense"
                         v-model="type"
                     />
-                    <span>Expense</span>
+                    <span>{{ 'RecordExpense' | localize }}</span>
                 </label>
             </p>
 
@@ -57,11 +57,11 @@
                     v-model.number="amount"
                     :class="{ invalid: ($v.amount.$dirty && !$v.amount.minValue) }"
                 >
-                <label for="amount">Total</label>
+                <label for="amount">{{ 'RecordTotal' | localize }}</label>
                 <span
                     v-if="$v.amount.$dirty && !$v.amount.minValue"
                     class="helper-text invalid"
-                >Min value is 1</span>
+                >{{ 'RecordMinValue' | localize(amountMinValue) }}</span>
             </div>
 
             <div class="input-field">
@@ -71,15 +71,15 @@
                     v-model="description"
                     :class="{ invalid: ($v.description.$dirty && !$v.description.required) }"
                 >
-                <label for="description">Description</label>
+                <label for="description">{{ 'RecordDescription' | localize }}</label>
                 <span
                     v-if="$v.description.$dirty && !$v.description.required"
                     class="helper-text invalid"
-                >Please type a description</span>
+                >{{ 'RecordDescriptionValidator' | localize }}</span>
             </div>
 
             <button class="btn waves-effect waves-light" type="submit">
-                Create
+                {{ 'RecordCreate' | localize }}
                 <i class="material-icons right">send</i>
             </button>
         </form>
@@ -92,6 +92,11 @@ import { mapGetters } from 'vuex';
 
 export default {
     name: 'NewRecord',
+    metaInfo() {
+        return {
+            title: this.$title('RecordTitle')
+        };
+    },
     data: () => ({
         isLoading: true,
         categories: [],
@@ -113,6 +118,9 @@ export default {
             }
 
             return this.info.balance >= this.amount;
+        },
+        amountMinValue() {
+            return this.$v.amount.$params.minValue.min;
         }
     },
     methods: {

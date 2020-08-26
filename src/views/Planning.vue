@@ -1,22 +1,25 @@
 <template>
     <div>
         <div class="page-title">
-            <h3>Planning</h3>
+            <h3>{{ 'PlanningTitle' | localize }}</h3>
             <h4>{{ info.balance | currency('USD') }}</h4>
         </div>
 
         <Loader v-if="isLoading"/>
 
         <p class="center" v-else-if="!categories.length">
-            You don't have any categories yet.
-            <router-link to="/categories">Add a new category</router-link>
+            {{ 'PlanningWarning' | localize }}
+            <router-link to="/categories">{{ 'PlanningAddCategory' | localize }}</router-link>
         </p>
 
         <section v-else>
             <div v-for="cat in categories" :key="cat.id">
                 <p>
                     <strong>{{ cat.title }}:</strong>
-                    Spent {{ cat.spent | currency }} out of {{ cat.limit | currency }}
+                    {{ 'PlanningSpent' | localize }}
+                    {{ cat.spent | currency }}
+                    {{ 'PlanningOutOf' | localize }}
+                    {{ cat.limit | currency }}
                 </p>
                 <div class="progress" v-tooltip="cat.tooltip">
                     <div
@@ -32,9 +35,15 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import localizeFilter from '@/filters/localize.filter';
 
 export default {
     name: 'Planning',
+    metaInfo() {
+        return {
+            title: this.$title('PlanningTitle')
+        };
+    },
     data: () => ({
         isLoading: true,
         categories: [],
@@ -63,8 +72,9 @@ export default {
                     : 'red';
 
             const tooltipValue = cat.limit - spent;
-            const tooltip = `${tooltipValue < 0 ? 'In excess of' : 'Left'}
-             ${this.$options.filters.currency(Math.abs(tooltipValue))}`;
+            const valueToLocalize = `${tooltipValue < 0 ? 'PlanningExcess' : 'PlanningLeft'}`;
+            const tooltip = localizeFilter(valueToLocalize)
+                + `${this.$options.filters.currency(Math.abs(tooltipValue))}`;
 
             return {
                 ...cat,

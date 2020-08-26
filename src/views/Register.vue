@@ -1,7 +1,7 @@
 <template>
     <form class="card auth-card" @submit.prevent="submitHandler">
         <div class="card-content">
-            <span class="card-title">Home Bookkeeping</span>
+            <span class="card-title">{{ 'AuthTitle' | localize }}</span>
             <div class="input-field">
                 <input
                     id="email"
@@ -14,11 +14,11 @@
                 <small
                     class="helper-text invalid"
                     v-if="$v.email.$dirty && !$v.email.required"
-                >This field should not be empty</small>
+                >{{ 'AuthEmailEmpty' | localize }}</small>
                 <small
                     class="helper-text invalid"
                     v-else-if="$v.email.$dirty && !$v.email.email"
-                >Please type correct email</small>
+                >{{ 'AuthEmailValidator' | localize }}</small>
             </div>
             <div class="input-field">
                 <input
@@ -28,15 +28,15 @@
                     :class="{ invalid: ($v.password.$dirty && !$v.password.required) ||
                     ($v.password.$dirty && !$v.password.minLength) }"
                 >
-                <label for="password">Password</label>
+                <label for="password">{{ 'AuthPassword' | localize }}</label>
                 <small
                     class="helper-text invalid"
                     v-if="$v.password.$dirty && !$v.password.required"
-                >Please fill in password field</small>
+                >{{ 'AuthPasswordEmpty' | localize }}</small>
                 <small
                     class="helper-text invalid"
                     v-else-if="$v.password.$dirty && !$v.password.minLength"
-                >Password length should be at least 8 characters</small>
+                >{{ 'AuthPasswordLength' | localize(passwordMinLength)}}</small>
             </div>
             <div class="input-field">
                 <input
@@ -46,16 +46,16 @@
                     v-model.trim="name"
                     :class="{ invalid: ($v.name.$dirty && !$v.name.required) }"
                 >
-                <label for="name">Name</label>
+                <label for="name">{{ 'RegisterName' | localize }}</label>
                 <small
                     class="helper-text invalid"
                     v-if="$v.name.$dirty && !$v.name.required"
-                >Please type your name</small>
+                >{{ 'RegisterNameValidator' | localize }}</small>
             </div>
             <p>
                 <label>
                     <input type="checkbox" v-model="checkbox"/>
-                    <span>I agree to the Terms of Use</span>
+                    <span>{{ 'RegisterTerms' | localize }}</span>
                 </label>
             </p>
         </div>
@@ -65,14 +65,14 @@
                     class="btn waves-effect waves-light auth-submit"
                     type="submit"
                 >
-                    Register
+                    {{ 'Register' | localize }}
                     <i class="material-icons right">send</i>
                 </button>
             </div>
 
             <p class="center">
-                Already have an account?
-                <router-link to="/login">Sign in!</router-link>
+                {{ 'RegisterLoginText' | localize }}
+                <router-link to="/login">{{ 'RegisterLoginLink' | localize }}</router-link>
             </p>
         </div>
     </form>
@@ -83,6 +83,11 @@ import { email, required, minLength } from 'vuelidate/lib/validators';
 
 export default {
     name: 'Register',
+    metaInfo() {
+        return {
+            title: this.$title('RegisterTitle')
+        };
+    },
     data: () => ({
         email: '',
         password: '',
@@ -94,6 +99,11 @@ export default {
         password: { required, minLength: minLength(8) },
         name: { required },
         checkbox: { checked: v => v }
+    },
+    computed: {
+        passwordMinLength() {
+            return this.$v.limit.$params.minLength.min;
+        }
     },
     methods: {
         async submitHandler() {

@@ -4,7 +4,7 @@
         <div v-else class="app-main-layout">
             <Navbar @toggle-sidebar="isOpen = !isOpen"/>
 
-            <Sidebar v-model="isOpen"/>
+            <Sidebar v-model="isOpen" :key="locale"/>
 
             <main class="app-content" :class="{ full: !isOpen }">
                 <div class="app-page">
@@ -16,7 +16,8 @@
                 <router-link
                     class="btn-floating btn-large blue"
                     to="/record"
-                    v-tooltip="'Create a new record'"
+                    :key="addRecordText"
+                    v-tooltip="addRecordText"
                 >
                     <i class="large material-icons">add</i>
                 </router-link>
@@ -28,7 +29,7 @@
 <script>
 import Navbar from '@/components/app/Navbar';
 import Sidebar from '@/components/app/Sidebar';
-import messages from '@/utils/messages';
+import generateMessage from '@/utils/messages';
 
 export default {
     name: 'MainLayout',
@@ -43,11 +44,18 @@ export default {
     computed: {
         error() {
             return this.$store.getters.getError;
+        },
+        locale() {
+            return this.$store.getters['info/getInfo'].locale;
+        },
+        addRecordText() {
+            const locale = this.$store.getters['info/getInfo'].locale || 'en-US';
+            return locale === 'en-US' ? 'Create a new record' : 'Создать запись';
         }
     },
     watch: {
         error(fbError) {
-            this.$error(messages[fbError.code] || 'Something went wrong');
+            this.$error(generateMessage(fbError.code) || 'Something went wrong');
         }
     },
     async mounted() {

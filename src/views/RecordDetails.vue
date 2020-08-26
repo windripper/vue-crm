@@ -3,9 +3,11 @@
         <Loader v-if="isLoading"/>
         <div v-else-if="record">
             <div class="breadcrumb-wrap">
-                <router-link to="/history" class="breadcrumb">History</router-link>
+                <router-link to="/history" class="breadcrumb">
+                    {{ 'RecordHistory' | localize }}
+                </router-link>
                 <a class="breadcrumb">
-                    {{ record.type === 'income' ? 'Income' : 'Expense' }}
+                    {{ recordType | localize }}
                 </a>
             </div>
             <div class="row">
@@ -15,9 +17,9 @@
                         :class="record.recordClass"
                     >
                         <div class="card-content white-text">
-                            <p>Description: {{ record.description }}</p>
-                            <p>Total: {{ record.amount | currency }}</p>
-                            <p>Category: {{ record.categoryName }}</p>
+                            <p>{{ 'RecordDescription' | localize }}: {{ record.description }}</p>
+                            <p>{{ 'RecordTotal' | localize }}: {{ record.amount | currency }}</p>
+                            <p>{{ 'RecordCategory' | localize }}: {{ record.categoryName }}</p>
 
                             <small>{{ record.date | date('datetime') }}</small>
                         </div>
@@ -25,17 +27,27 @@
                 </div>
             </div>
         </div>
-        <p class="center" v-else>Oops, record with id: {{ $route.params.id }} not found</p>
+        <p class="center" v-else>{{ 'RecordNotFound' | localize($route.params.id) }}</p>
     </div>
 </template>
 
 <script>
 export default {
     name: 'RecordDetails',
+    metaInfo() {
+        return {
+            title: this.$title('RecordDetailsTitle')
+        };
+    },
     data: () => ({
         record: null,
         isLoading: true,
     }),
+    computed: {
+        recordType() {
+            return this.record.type === 'income' ? 'RecordIncome' : 'RecordExpense';
+        }
+    },
     async mounted() {
         const { id } = this.$route.params;
         const record = await this.$store.dispatch('record/fetchRecordById', id);

@@ -2,7 +2,7 @@
     <div class="col s12 m6">
         <div>
             <div class="page-subtitle">
-                <h4>Create</h4>
+                <h4>{{ 'CategoryCreateTitle' | localize }}</h4>
             </div>
 
             <form @submit.prevent="submitHandler">
@@ -13,11 +13,11 @@
                         v-model="title"
                         :class="{ invalid: ($v.title.$dirty && !$v.title.required) }"
                     >
-                    <label for="name">Category name</label>
+                    <label for="name">{{ 'CategoryName' | localize }}</label>
                     <span
                         v-if="$v.title.$dirty && !$v.title.required"
                         class="helper-text invalid"
-                    >Please enter category name</span>
+                    >{{ 'CategoryNameValidator' | localize }}</span>
                 </div>
 
                 <div class="input-field">
@@ -27,15 +27,15 @@
                         v-model.number="limit"
                         :class="{ invalid: ($v.limit.$dirty && !$v.limit.minValue) }"
                     >
-                    <label for="limit">Limit</label>
+                    <label for="limit">{{ 'CategoryLimit' | localize }}</label>
                     <span
                         v-if="$v.limit.$dirty && !$v.limit.minValue"
                         class="helper-text invalid"
-                    >Minimum value is 10</span>
+                    >{{ 'CategoryLimitValidator' | localize(minLimit) }}</span>
                 </div>
 
                 <button class="btn waves-effect waves-light" type="submit">
-                    Create
+                    {{ 'CategoryCreate' | localize }}
                     <i class="material-icons right">send</i>
                 </button>
             </form>
@@ -55,6 +55,11 @@ export default {
     validations: {
         title: { required },
         limit: { minValue: minValue(10) }
+    },
+    computed: {
+        minLimit() {
+            return this.$v.limit.$params.minValue.min;
+        }
     },
     methods: {
         async submitHandler() {
