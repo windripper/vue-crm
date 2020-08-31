@@ -67,7 +67,8 @@ export default {
 
         // eslint-disable-next-line
         this.dropdown = M.Dropdown.init(this.$refs.dropdown, {
-            constrainWidth: false
+            constrainWidth: false,
+            coverTrigger: false
         });
     },
     beforeDestroy() {
