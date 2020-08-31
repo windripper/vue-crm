@@ -73,7 +73,7 @@ export default {
                     title: this.title,
                     limit: this.limit
                 });
-                console.log('CategoryCreate', category);
+
                 this.$message(`Category: ${this.title} successfully was created`);
                 this.title = '';
                 this.limit = 10;

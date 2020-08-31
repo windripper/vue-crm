@@ -46,7 +46,7 @@ export default {
             return this.$store.getters.getError;
         },
         locale() {
-            return this.$store.getters['info/getInfo'].locale;
+            return this.$store.getters['info/getInfo'].locale || 'us-US';
         },
         addRecordText() {
             const locale = this.$store.getters['info/getInfo'].locale || 'en-US';

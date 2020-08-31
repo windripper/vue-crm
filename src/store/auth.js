@@ -6,9 +6,9 @@ export default {
         async register({ dispatch, commit }, { email, password, name }) {
             try {
                 await auth.createUserWithEmailAndPassword(email, password);
-                const uid = await dispatch('getUser');
+                const uid = await dispatch('getUid');
                 await db.ref(`/users/${uid}/info`).set({
-                    balance: 100,
+                    balance: 0,
                     name
                 });
             } catch(e) {
