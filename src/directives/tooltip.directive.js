@@ -1,7 +1,7 @@
 export default {
-    bind(el, { value }) {
+    bind(el, { value, arg = 'bottom' }) {
         // eslint-disable-next-line
-        M.Tooltip.init(el, { html: value, position: 'left' });
+        M.Tooltip.init(el, { html: value, position: arg });
     },
     unBind(el) {
         // eslint-disable-next-line

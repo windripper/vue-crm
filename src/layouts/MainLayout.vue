@@ -17,7 +17,7 @@
                     class="btn-floating btn-large blue"
                     to="/record"
                     :key="addRecordText"
-                    v-tooltip="addRecordText"
+                    v-tooltip:left="addRecordText"
                 >
                     <i class="large material-icons">add</i>
                 </router-link>
